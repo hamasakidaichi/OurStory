@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "614431980669",
+    "project_id": "daichitest-88737",
+    "storage_bucket": "daichitest-88737.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614431980669:android:650e6fe553cbd4d8c48514",
+        "android_client_info": {
+          "package_name": "com.example.test_fltter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "614431980669-fl755lkulc4mtfsfo3d3992hebdo1scq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP4vDw9Yjv-LU_kT11fOI0mp2r0NYBxaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614431980669-fl755lkulc4mtfsfo3d3992hebdo1scq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "614431980669-5fv98h7pmle9f6fd5ev6rkaq00me4fkf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.testFltterApp.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
