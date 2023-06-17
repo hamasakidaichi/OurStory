@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'second_page.dart';
@@ -59,10 +62,14 @@ class _MyHomePageState extends State<MyHomePage> {
       (Timer timer) {
         if (_timer < 1){
           timer.cancel();
+          FirebaseFirestore.instance
+            .collection('game_result2').add({
+            'score': _counter,
+          });
           Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SecondPage('$_counter'),
+                  builder: (context) => SecondPage(_counter),
                   //fullscreenDialog: true,
                 ),
               );
@@ -108,11 +115,11 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SecondPage('$_counter'),
+                  builder: (context) => SecondPage(_counter),
                   //fullscreenDialog: true,
                 ),
               );
-              },
+        },
       ),
     );
   }
