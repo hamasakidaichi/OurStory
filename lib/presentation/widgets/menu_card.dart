@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class MenuCard extends StatelessWidget {
+  final text;
+  final onPressed;
   const MenuCard({
     super.key,
-    // required this.onPressed,
+    required this.text,
+    required this.onPressed,
   });
 
   //final VoidCallback onPressed;
@@ -16,10 +19,8 @@ class MenuCard extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           fixedSize: const Size(150, 150),
         ),
-        onPressed: null, //onPressed,
-        child: const Text(
-          'l10n.tapGame',
-        ),
+        onPressed: onPressed, //onPressed,
+        child: Text(text),
       ),
     );
   }
