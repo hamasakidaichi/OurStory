@@ -25,9 +25,9 @@ class PageHome extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const MenuCard(text: L10n.tapGame, onPressed: null),
+                  const MenuCard(text: L10n.ourTap, onPressed: null),
                   MenuCard(
-                    text: L10n.yet,
+                    text: L10n.ourMap,
                     onPressed: () => pushMap(context),
                   ),
                 ],
