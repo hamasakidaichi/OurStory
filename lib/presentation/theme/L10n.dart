@@ -1,5 +1,6 @@
 class L10n {
-  static const tapGame = 'タップゲーム';
+  static const ourTap = 'Our Tap';
+  static const ourMap = 'Our Map';
   static const yet = 'Comming Soon';
   static const hokkai = '北海道';
   static const aomori = '青森';

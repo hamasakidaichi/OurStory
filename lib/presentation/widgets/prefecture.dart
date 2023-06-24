@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:our_story/main.dart';
 import 'package:our_story/presentation/theme/size.dart';
 
 const w = RawSize.w;
@@ -8,7 +10,7 @@ const h = RawSize.h;
 const h2 = h * 2;
 const h3 = h * 3;
 
-class PrefectureS extends StatelessWidget {
+class PrefectureS extends ConsumerWidget {
   final text;
   const PrefectureS({
     super.key,
@@ -16,7 +18,12 @@ class PrefectureS extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.read(visibleProvider.notifier);
+    onPress() {
+      notifier.state = true;
+    }
+
     return TextButton(
       style: ButtonStyle(
         padding: MaterialStateProperty.all(EdgeInsets.zero),
@@ -24,18 +31,23 @@ class PrefectureS extends StatelessWidget {
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
       ),
-      onPressed: null, //onPressed,
+      onPressed: onPress,
       child: Text(text),
     );
   }
 }
 
-class PrefectureWide extends StatelessWidget {
+class PrefectureWide extends ConsumerWidget {
   final text;
   const PrefectureWide({super.key, required this.text});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.read(visibleProvider.notifier);
+    onPress() {
+      notifier.state = true;
+    }
+
     return TextButton(
       style: ButtonStyle(
         padding: MaterialStateProperty.all(EdgeInsets.zero),
@@ -43,18 +55,23 @@ class PrefectureWide extends StatelessWidget {
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
       ),
-      onPressed: null, //onPressed,
+      onPressed: onPress, //onPressed,
       child: Text(text),
     );
   }
 }
 
-class PrefectureTall extends StatelessWidget {
+class PrefectureTall extends ConsumerWidget {
   final text;
   const PrefectureTall({super.key, required this.text});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.read(visibleProvider.notifier);
+    onPress() {
+      notifier.state = true;
+    }
+
     return TextButton(
       style: ButtonStyle(
         padding: MaterialStateProperty.all(EdgeInsets.zero),
@@ -62,18 +79,23 @@ class PrefectureTall extends StatelessWidget {
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
       ),
-      onPressed: null, //onPressed,
+      onPressed: onPress, //onPressed,
       child: Text(text),
     );
   }
 }
 
-class PrefectureBig extends StatelessWidget {
+class PrefectureBig extends ConsumerWidget {
   final text;
   const PrefectureBig({super.key, required this.text});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.read(visibleProvider.notifier);
+    onPress() {
+      notifier.state = true;
+    }
+
     return TextButton(
       style: ButtonStyle(
         padding: MaterialStateProperty.all(EdgeInsets.zero),
@@ -81,7 +103,7 @@ class PrefectureBig extends StatelessWidget {
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
       ),
-      onPressed: null, //onPressed,
+      onPressed: onPress, //onPressed,
       child: Text(text),
     );
   }
