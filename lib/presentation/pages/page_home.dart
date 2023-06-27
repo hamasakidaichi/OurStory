@@ -11,6 +11,10 @@ class PageHome extends StatelessWidget {
     context.push('/map');
   }
 
+  pushCalendar(BuildContext context) {
+    context.push('/calendar');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,11 +36,14 @@ class PageHome extends StatelessWidget {
                   ),
                 ],
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  MenuCard(text: L10n.yet, onPressed: null),
-                  MenuCard(text: L10n.yet, onPressed: null),
+                  MenuCard(
+                    text: L10n.ourCal,
+                    onPressed: () => pushCalendar(context),
+                  ),
+                  const MenuCard(text: L10n.yet, onPressed: null),
                 ],
               ),
             ],

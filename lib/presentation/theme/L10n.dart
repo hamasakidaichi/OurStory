@@ -1,6 +1,7 @@
 class L10n {
   static const ourTap = 'Our Tap';
   static const ourMap = 'Our Map';
+  static const ourCal = 'Our Cal';
   static const yet = 'Comming Soon';
   static const hokkai = '北海道';
   static const aomori = '青森';
