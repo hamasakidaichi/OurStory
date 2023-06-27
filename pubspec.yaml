@@ -16,6 +16,7 @@ dependencies:
   cloud_firestore:
   table_calendar:
   intl:
+  flutter_chat_ui:
 
 dev_dependencies:
   flutter_test:

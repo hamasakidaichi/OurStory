@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:our_story/presentation/pages/chat.dart';
 import 'package:our_story/presentation/pages/page_calendar.dart';
 import 'package:our_story/presentation/pages/page_home.dart';
 import 'package:our_story/presentation/pages/page_mapping.dart';
@@ -15,5 +16,9 @@ final router = GoRouter(initialLocation: '/home', routes: [
   GoRoute(
     path: '/calendar',
     builder: (context, state) => const PageCalendar(),
+  ),
+  GoRoute(
+    path: '/chat',
+    builder: (context, state) => const MyHomePage(),
   ),
 ]);

@@ -15,6 +15,10 @@ class PageHome extends StatelessWidget {
     context.push('/calendar');
   }
 
+  pushChat(BuildContext context) {
+    context.push('/chat');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +47,10 @@ class PageHome extends StatelessWidget {
                     text: L10n.ourCal,
                     onPressed: () => pushCalendar(context),
                   ),
-                  const MenuCard(text: L10n.yet, onPressed: null),
+                  MenuCard(
+                    text: L10n.ourChat,
+                    onPressed: () => pushChat(context),
+                  ),
                 ],
               ),
             ],
