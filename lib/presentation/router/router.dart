@@ -1,9 +1,11 @@
 import 'package:go_router/go_router.dart';
+import 'package:our_story/presentation/pages/page_auth.dart';
+import 'package:our_story/presentation/pages/page_chat.dart';
 import 'package:our_story/presentation/pages/page_calendar.dart';
 import 'package:our_story/presentation/pages/page_home.dart';
 import 'package:our_story/presentation/pages/page_mapping.dart';
 
-final router = GoRouter(initialLocation: '/home', routes: [
+final router = GoRouter(initialLocation: '/auth', routes: [
   GoRoute(
     path: '/home',
     builder: (context, state) => const PageHome(),
@@ -15,5 +17,13 @@ final router = GoRouter(initialLocation: '/home', routes: [
   GoRoute(
     path: '/calendar',
     builder: (context, state) => const PageCalendar(),
+  ),
+  GoRoute(
+    path: '/chat',
+    builder: (context, state) => const PageChat(),
+  ),
+  GoRoute(
+    path: '/auth',
+    builder: (context, state) => const PageAuth(),
   ),
 ]);

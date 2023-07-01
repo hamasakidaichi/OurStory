@@ -12,10 +12,13 @@ dependencies:
   flutter_riverpod:
   cupertino_icons: ^1.0.2
   firebase_core: ^2.14.0
-  firebase_auth:
+  oauth2:
   cloud_firestore:
   table_calendar:
   intl:
+  flutter_chat_ui:
+  firebase_auth:
+  google_sign_in:
 
 dev_dependencies:
   flutter_test:
@@ -27,3 +30,4 @@ flutter:
   uses-material-design: true
   assets:
   - assets/images/
+
