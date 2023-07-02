@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:our_story/application/state/auth_provider.dart';
+import 'package:our_story/application/state/auth_state_provider.dart';
+import 'package:our_story/application/state/user_changes_provider.dart';
 import 'package:our_story/infrastructure/firebase/service.dart';
 
 class SignInScreen extends ConsumerWidget {
@@ -9,7 +10,9 @@ class SignInScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authProvider);
+    final authState = ref.watch(authStateProvider);
+    final userState = ref.watch(userChangesProvider);
+
     goHome(BuildContext context) {
       context.go('/home');
     }
@@ -30,6 +33,7 @@ class SignInScreen extends ConsumerWidget {
                     await service.signIn();
                     debugPrint('サインイン完了');
                     goHome(context);
+                    debugPrint(userState as String?);
                   } catch (error) {
                     debugPrint('サインインエラー : $error');
                   }
@@ -38,7 +42,7 @@ class SignInScreen extends ConsumerWidget {
               );
             } else {
               // サインイン済みの場合のUI
-              return Text('Signed in as: ${user.displayName}');
+              return goHome(context);
             }
           },
           loading: () => const CircularProgressIndicator(),
