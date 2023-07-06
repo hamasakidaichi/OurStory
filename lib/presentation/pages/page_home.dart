@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:our_story/application/state/select_room_provider.dart';
 import 'package:our_story/presentation/theme/L10n.dart';
 import 'package:our_story/presentation/widgets/menu_card.dart';
 import 'package:our_story/presentation/widgets/title_home.dart';
 
-class PageHome extends StatelessWidget {
+class PageHome extends ConsumerWidget {
   const PageHome({super.key});
 
   pushMap(BuildContext context) {
@@ -19,9 +21,30 @@ class PageHome extends StatelessWidget {
     context.push('/chat');
   }
 
+  pushCreate(BuildContext context) {
+    context.push('/create');
+  }
+
+  goSelection(BuildContext context) {
+    context.go('/selection');
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedRoom = ref.read(selectedRoomProvider);
+    final roomName = selectedRoom[0];
+    final roomId = selectedRoom[1];
+
+    // selectedRoomの内容をデバッグプリントで表示
+    print('selectedRoom: $selectedRoom');
+
     return Scaffold(
+      appBar: AppBar(
+        title: Text(roomName),
+        leading: IconButton(
+            onPressed: () => goSelection(context),
+            icon: const Icon(Icons.arrow_back)),
+      ),
       body: Container(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -30,6 +53,10 @@ class PageHome extends StatelessWidget {
           Center(
               child: Column(
             children: [
+              ElevatedButton(
+                onPressed: () => pushCreate(context),
+                child: const Text('create'),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

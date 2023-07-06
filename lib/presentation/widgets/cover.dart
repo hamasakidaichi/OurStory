@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:our_story/main.dart';
+import 'package:our_story/application/state/visible_provider.dart';
 
 class Cover extends ConsumerWidget {
   const Cover({

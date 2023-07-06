@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:our_story/presentation/widgets/authUi.dart';
+import 'package:our_story/presentation/widgets/auth_ui.dart';
 
 class PageAuth extends StatelessWidget {
   const PageAuth({super.key});

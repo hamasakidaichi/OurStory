@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:our_story/main.dart';
+import 'package:our_story/application/state/visible_provider.dart';
 import 'package:our_story/presentation/widgets/cover.dart';
 import 'package:our_story/presentation/widgets/map_block.dart';
 
