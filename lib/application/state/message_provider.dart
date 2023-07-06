@@ -12,4 +12,6 @@ class MessagesNotifier extends ChangeNotifier {
   }
 }
 
-final messagesProvider = Provider((ref) => MessagesNotifier());
+final messagesProvider = ChangeNotifierProvider((ref) => MessagesNotifier());
+
+//チャットメッセージの状態管理

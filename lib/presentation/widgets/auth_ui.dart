@@ -13,8 +13,8 @@ class SignInScreen extends ConsumerWidget {
     final authState = ref.watch(authStateProvider);
     final userState = ref.watch(userChangesProvider);
 
-    goHome(BuildContext context) {
-      context.go('/home');
+    goSelection(BuildContext context) {
+      context.go('/selection');
     }
 
     return Scaffold(
@@ -32,7 +32,7 @@ class SignInScreen extends ConsumerWidget {
                   try {
                     await service.signIn();
                     debugPrint('サインイン完了');
-                    goHome(context);
+                    goSelection(context);
                     debugPrint(userState as String?);
                   } catch (error) {
                     debugPrint('サインインエラー : $error');
@@ -42,7 +42,7 @@ class SignInScreen extends ConsumerWidget {
               );
             } else {
               // サインイン済みの場合のUI
-              return goHome(context);
+              return goSelection(context);
             }
           },
           loading: () => const CircularProgressIndicator(),

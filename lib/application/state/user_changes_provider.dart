@@ -10,3 +10,5 @@ final userChangesProvider = Provider<User?>((ref) {
     error: (_, __) => null,
   );
 });
+
+//ユーザーが存在しているかどうかのチェック。ユーザーが存在しない場合nullを返し、ユーザーが存在する場合はdataを返す:w

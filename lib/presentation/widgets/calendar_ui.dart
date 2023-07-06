@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:our_story/main.dart';
+import 'package:our_story/application/state/event_list_provider.dart';
+import 'package:our_story/application/state/focused_provider.dart';
+import 'package:our_story/application/state/selected_provider.dart';
 import 'package:our_story/presentation/router/eventList.dart';
 import 'package:table_calendar/table_calendar.dart';
 
