@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:our_story/application/state/select_room_provider.dart';
 import 'package:our_story/application/state/user_provider.dart';
 
+late String selectedRoomId;
+
 class PageSelectRoom extends ConsumerWidget {
   const PageSelectRoom({Key? key}) : super(key: key);
 
@@ -65,6 +67,7 @@ class PageSelectRoom extends ConsumerWidget {
                   return ListTile(
                     title: Text(room['roomName']),
                     onTap: () {
+                      selectedRoomId = room['roomId'] as String;
                       ref.read(selectedRoomProvider.notifier).updateRooms(
                         [room['roomName'] as String, room['roomId'] as String],
                       );
