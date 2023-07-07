@@ -17,7 +17,9 @@ class PageHome extends ConsumerWidget {
     context.push('/calendar');
   }
 
-  pushChat(BuildContext context) {
+  pushChat(
+    BuildContext context,
+  ) {
     context.push('/chat');
   }
 
@@ -31,9 +33,10 @@ class PageHome extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //ドキュメントパス
+
     final selectedRoom = ref.read(selectedRoomProvider);
     final roomName = selectedRoom[0];
-    final roomId = selectedRoom[1];
 
     // selectedRoomの内容をデバッグプリントで表示
     print('selectedRoom: $selectedRoom');

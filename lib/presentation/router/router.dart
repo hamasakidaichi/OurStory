@@ -11,7 +11,7 @@ import 'package:our_story/presentation/pages/page_select_rooms.dart';
 final router = GoRouter(initialLocation: '/auth', routes: [
   GoRoute(
     path: '/selection',
-    builder: (context, state) => PageSelectRoom(),
+    builder: (context, state) => const PageSelectRoom(),
   ),
   GoRoute(
     path: '/home',
