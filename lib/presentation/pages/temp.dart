@@ -1,107 +1,139 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:our_story/domain/features/room_model.dart';
+import 'package:our_story/application/state/event_list_provider.dart';
+import 'package:our_story/application/state/focused_provider.dart';
+import 'package:our_story/application/state/selected_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:our_story/domain/features/events_model.dart';
+import 'package:our_story/domain/types/roomid_holder.dart';
+import 'package:our_story/domain/features/eventList.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-final roomProvider =
-    StateNotifierProvider<RoomNotifier, Room>((ref) => RoomNotifier());
+void fetchAndPrintCalEvents() async {
+  final roomId = RoomIdHolder.roomId;
+  final path = '/rooms/$roomId/cal';
+  final collectionRef = FirebaseFirestore.instance.collection(path);
 
-final myRoomsProvider = FutureProvider<List<Room>>((ref) async {
-  String userId = 'your_user_id'; // Replace with your user ID retrieval method
-  QuerySnapshot snapshot = await FirebaseFirestore.instance
-      .collection('rooms')
-      .where('participantIds', arrayContains: userId)
-      .get();
+  final snapshot = await collectionRef.get();
+  final events = snapshot.docs.map((doc) {
+    final event = doc['event'] as String;
+    final date = doc['date'] as Timestamp;
 
-  return snapshot.docs.map((doc) {
-    return Room(
-      roomId: doc.id,
-      roomName: doc['roomName'],
-      creatorId: doc['creatorId'],
-      participantIds: List<String>.from(doc['participantIds']),
-    );
+    final dateTime = date.toDate();
+
+    return EventModel(event: event, date: dateTime);
   }).toList();
-});
 
-class RoomNotifier extends StateNotifier<Room> {
-  RoomNotifier()
-      : super(
-            Room(roomId: '', roomName: '', creatorId: '', participantIds: []));
-
-  void updateRoomName(String newRoomName) {
-    state = state.copyWith(roomName: newRoomName);
-  }
-
-  void createRoom() {
-    // ルーム作成の処理を追加する
-  }
-
-  void deleteRoom(String roomId) {
-    // ルーム削除の処理を追加する
+  for (var event in events) {
+    print('Event: ${event.event}, Date: ${event.date}');
   }
 }
 
-class PageCreateRoom extends ConsumerWidget {
-  final TextEditingController _roomNameController = TextEditingController();
-
-  PageCreateRoom({super.key});
+// デバッグプリントでchatコレクション内の全てのイベントを表示
+class CalendarUi extends ConsumerWidget {
+  const CalendarUi({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final room = ref.watch(roomProvider.notifier);
+    fetchAndPrintCalEvents();
+    final focused = ref.watch(focusedProvider);
+    final focusedNotifier = ref.read(focusedProvider.notifier);
+    final selected = ref.watch(selectedProvider);
+    final selectedNotifier = ref.read(selectedProvider.notifier);
+    final eventListsNotifier = ref.read(eventListsProvider.notifier);
+    final watchLists = ref.watch(eventListsProvider);
+    final eventTextController = TextEditingController(); // 追加
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Room'),
-      ),
-      body: Column(
+    List getEventForDay(DateTime day) {
+      return eventListMap[day] ?? [];
+    }
+
+    void addEvent(DateTime day, String event) {
+      final roomId = RoomIdHolder.roomId; // ルームIDを設定する
+
+      // Firestoreの参照パスを構築
+      final path = '/rooms/$roomId/cal';
+
+      // Firestoreの参照を取得
+      final collectionRef = FirebaseFirestore.instance.collection(path);
+
+      // イベントを追加
+      collectionRef.add({'date': day, 'event': event});
+
+      // イベントリストを更新
+      eventListMap[day] = [...(eventListMap[day] ?? []), event];
+      eventListsNotifier.state = eventListMap[selected] ?? [];
+    }
+
+    return Center(
+      child: Column(
         children: [
-          TextField(
-            controller: _roomNameController,
-            decoration: const InputDecoration(
-              labelText: 'Room Name',
+          TableCalendar(
+            locale: 'ja_JP',
+            firstDay: DateTime.utc(2023, 4, 1),
+            lastDay: DateTime.utc(2026, 12, 31),
+            focusedDay: focused,
+            headerStyle: const HeaderStyle(
+              formatButtonVisible: false,
             ),
-            onChanged: (value) {
-              room.updateRoomName(value);
+            selectedDayPredicate: (day) {
+              return isSameDay(selected, day);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              if (!isSameDay(selected, selectedDay)) {
+                selectedNotifier.state = selectedDay;
+                focusedNotifier.state = focusedDay;
+              }
+
+              eventListsNotifier.state = eventListMap[selectedDay] ?? [];
+            },
+            eventLoader: getEventForDay,
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: watchLists.length,
+            itemBuilder: (context, index) {
+              final event = watchLists[index];
+              return ListTile(
+                title: Text(event),
+              );
             },
           ),
-          ElevatedButton(
+          FloatingActionButton(
+            tooltip: 'Action!',
+            child: const Icon(Icons.add),
             onPressed: () {
-              room.createRoom();
-              _roomNameController.clear();
-            },
-            child: const Text('Create'),
-          ),
-          ref.watch(myRoomsProvider).when(
-                data: (rooms) {
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: rooms.length,
-                      itemBuilder: (context, index) {
-                        return Dismissible(
-                          key: Key(rooms[index].roomId),
-                          direction: DismissDirection.startToEnd,
-                          background: Container(
-                            color: Colors.red,
-                            alignment: Alignment.centerLeft,
-                            child: const Icon(Icons.delete),
-                          ),
-                          onDismissed: (direction) {
-                            room.deleteRoom(rooms[index].roomId);
+              final selectedDay = selectedNotifier.state;
+              if (selectedDay != null) {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text('Add Event'),
+                      content: TextField(
+                        controller: eventTextController, // 追加
+                        onChanged: (value) {
+                          // イベントの入力を受け取る
+                          // eventText = value; // 削除
+                        },
+                      ),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () {
+                            // 入力されたイベントを追加する
+                            addEvent(
+                                selectedDay, eventTextController.text); // 変更
+                            Navigator.of(context).pop();
                           },
-                          child: ListTile(
-                            title: Text(rooms[index].roomName),
-                            subtitle:
-                                Text('Creator: ${rooms[index].creatorId}'),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
-                loading: () => const CircularProgressIndicator(),
-                error: (error, stackTrace) => Text('Error: $error'),
-              ),
+                          child: const Text('Add'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            },
+          ),
         ],
       ),
     );
