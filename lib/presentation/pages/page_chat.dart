@@ -6,9 +6,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:our_story/application/state/select_room_provider.dart';
 import 'package:our_story/application/state/user_provider.dart';
-import 'package:our_story/presentation/pages/page_select_rooms.dart';
+import 'package:our_story/domain/types/roomid_holder.dart';
 import '../../domain/types/utils.dart';
 
+//MessagesNotifierはChangeNotifierを継承しており、
+//状態の変更をリスナーに通知する役目を持っている
+//ここでの状態の変更とは、メッセージのことである
+//_messagesプロパティは、メッセージ自体を格納するためのリストであり、
+//外部から参照できるようにしたもの
+//_messagesStreamプロパティは、Firestoreのメッセージストリームを取得する
+//startListeningメソッドで、_messageStreamを購読し、新しいメッセージがFirestore
+//に届いた際に、_messagesリストを更新し、リスナーに通知する。
+//この場合のリスナーとは、MessagesNotifierのインスタンスを監視しているウィジェットなど
+//通知させたいリスナーは実装や要件により変化する
 class MessagesNotifier extends ChangeNotifier {
   final List<types.Message> _messages = [];
   List<types.Message> get messages => _messages;
@@ -28,6 +38,7 @@ class MessagesNotifier extends ChangeNotifier {
     });
   }
 
+//addMesageメソッドは、新しいメッセージを_messagesに加え、リスナーに通知する。
   void addMessage(types.Message message) {
     _messages.insert(0, message);
     debugPrint('Added message: $message');
@@ -35,8 +46,15 @@ class MessagesNotifier extends ChangeNotifier {
   }
 }
 
+//messagesProviderはChangeNotifierProviderであり、MessagesNotifierのインスタンスである
+//roomIdを使用して、MessagesNotifierを初期化する。
+//ここで使われるroomIdはユーザーが作成したルームコレクション直下のドキュメントIdであり、
+//これを渡すことでgetMessagesStreamは正しい参照先を得る
 final messagesProvider =
-    ChangeNotifierProvider((ref) => MessagesNotifier(selectedRoomId));
+    ChangeNotifierProvider((ref) => MessagesNotifier(RoomIdHolder.roomId));
+
+//sendMessageは指定されたルームIdのメッセージストリームを取得するための関数である
+//awaitで送ったメッセージをコレクション内のドキュメントに追加する処理が完了するまで待つ
 
 Future<void> sendMessage(String roomId, types.User user, String text) async {
   final collectionRef = FirebaseFirestore.instance
@@ -59,6 +77,12 @@ Future<void> sendMessage(String roomId, types.User user, String text) async {
   });
 }
 
+//getMessagesStream関数は、指定されたルームIdのメッセージストリームを取得する
+//二つの型、<List<types.Message>>とgetMessagesStreamが持つStream<List<types.Message>>
+//を持つ。
+//Firestoreからのストリームを受け取り、
+//List<types.Message> 型のリストとしてマッピングして返すため
+//その戻り値の型は List<types.Message> となる
 Stream<List<types.Message>> getMessagesStream(String roomId) {
   final collectionRef = FirebaseFirestore.instance
       .collection('rooms')
@@ -91,6 +115,9 @@ class PageChat extends ConsumerWidget {
     final selectedRoom = ref.read(selectedRoomProvider);
     final roomId = selectedRoom[1];
 
+//ここでMessagesNotifierのインスタンスが生成され、そのインスタンスが監視される
+//具体的な処理は、_messagesリストが更新されるとnofifyListenersが呼ばれ、
+//PageChatへ通知する。これにより新しいメッセージが発信されるたびに、ウィジェットが再構築される
     final messages = ref.watch(messagesProvider);
 
     void handleSendPressed(types.PartialText message) {

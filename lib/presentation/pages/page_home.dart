@@ -56,10 +56,6 @@ class PageHome extends ConsumerWidget {
           Center(
               child: Column(
             children: [
-              ElevatedButton(
-                onPressed: () => pushCreate(context),
-                child: const Text('create'),
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

@@ -30,14 +30,7 @@ class PageCreateRoom extends ConsumerWidget {
         .set({
       'location': 'Initial location',
     });
-    await firestore
-        .collection('rooms')
-        .doc(roomId)
-        .collection('cal')
-        .doc()
-        .set({
-      'event': 'Initial event',
-    });
+    firestore.collection('rooms').doc(roomId).collection('cal').doc();
   }
 
   @override
